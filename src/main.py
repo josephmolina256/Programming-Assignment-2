@@ -1,38 +1,50 @@
+import sys
 from .policies import LRU, OPTFF, FIFO
-
-# sample input and capacity for testing
-sample_input = [1, 2, 3, 2, 1, 4, 5, 1]
-sample_capacity = 3
-
-"""correct output:
-FIFO: 2 hits, 6 misses
-LRU: 3 hits, 5 misses
-"""
+from .utils import read_requests, write_output, write_error
 
 def main():
-    capacity = sample_capacity
-    requests = sample_input
-    m = len(requests)
+    if len(sys.argv) < 2 or len(sys.argv) > 3:
+        print("""Usage:
+        python -m src/main.py <input file path>
+        python -m src/main.py <input file path> <output file path>""")
+        return 1
 
-    fifo_cache = FIFO(capacity)
-    lru_cache = LRU(capacity)
-    optff_cache = OPTFF(capacity)
+    input_path = sys.argv[1]
+    output_path = sys.argv[2] if len(sys.argv) == 3 else None
 
-    lru_hits = fifo_hits = optff_hits = 0
-    for item in requests:
-        if fifo_cache.request(item):
-            fifo_hits += 1
-        if lru_cache.request(item):
-            lru_hits += 1
-        if optff_cache.request(item):
-            optff_hits += 1
+    try:
+        k, m, requests = read_requests(input_path)
+    except:
+        if output_path is not None:
+            write_error(output_path, "INVALID INPUT")
+        else:
+            print("INVALID INPUT")
+        return 1
 
-    print(f"FIFO: {fifo_hits} hits, {m - fifo_hits} misses")
-    print(f"LRU: {lru_hits} hits, {m - lru_hits} misses")
-    print(f"OPTFF: {optff_hits} hits, {m - optff_hits} misses")
-    
+    fifo = FIFO(k)
+    lru = LRU(k)
+    optff = OPTFF(k, requests)
+
+    fifo_misses = 0
+    lru_misses = 0
+    optff_misses = 0
+
+    for request in requests:
+        if not fifo.request(request):
+            fifo_misses += 1
+        if not lru.request(request):
+            lru_misses += 1
+        if not optff.request(request):
+            optff_misses += 1
+
+    print(f"FIFO  : {fifo_misses}")
+    print(f"LRU   : {lru_misses}")
+    print(f"OPTFF : {optff_misses}")
+
+    if output_path is not None:
+        write_output(fifo_misses, lru_misses, optff_misses, output_path)
+
     return 0
-
 
 if __name__ == "__main__":
     main()
