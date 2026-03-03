@@ -5,8 +5,8 @@ from .utils import read_requests, write_output, write_error
 def main():
     if len(sys.argv) < 2 or len(sys.argv) > 3:
         print("""Usage:
-        python -m src/main.py <input file path>
-        python -m src/main.py <input file path> <output file path>""")
+        python -m src.main <input file path>
+        python -m src.main <input file path> <output file path>""")
         return 1
 
     input_path = sys.argv[1]
