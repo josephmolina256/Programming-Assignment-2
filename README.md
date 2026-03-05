@@ -6,7 +6,7 @@ This program compares the FIFO, LRU, and OPTFF cache eviction policies on the sa
 - Joseph Molina, UFID = 37598582
 
 # To compile/build the code
-- No compliation or build step required. 
+- No compilation or build step required. 
 - Ensure Python3.x installed.
 
 ```bash
@@ -22,7 +22,7 @@ python3 -m src.main <input file path> <output file path>
 python3 -m src.main data/file1.in data/file1.out
 ```
 
-# Assumtions
+# Assumptions
 **Input:**
 - The input file must contain exactly two non-empty lines.
 - The first line must contain two integers: k m
@@ -62,6 +62,6 @@ Let ( A ) be any offline algorithm that knows the full request sequence.
 Prove that the number of misses of OPTFF is no larger than that of ( A ) on any fixed sequence.
 
 A3:
-Consider the first time that OPTFF and A make a different eviction decision. Before this moment, their cache contained the same items. Now a miss occurs and OPTFF evicts the item (x) who will be used furthest in the future, and A evicts some other item (y). OPTFF chose x before y, so x is not needed until after y or possibly eever again. Keeping y in the cache is at least as good as keeping x, becayse y is needed sooner. Now consider A', who evicts x instead of y (but is otherewise the same as A), and thus A' will not have more misses than A. So A' agrees with OPTFF for one more step than A. Applying this inductively, if arbitrarily chosen A differs from OPTFF, we can always make this exchange and get an equally good algorithm that agrees with OPTFF longer. Thus OPTFF has no more misses than any other offline algorithm, and is optimal. 
+Consider the first time that OPTFF and A make a different eviction decision. Before this moment, their cache contained the same items. Now a miss occurs and OPTFF evicts the item (x) who will be used furthest in the future, and A evicts some other item (y). OPTFF chose x before y, so x is not needed until after y or possibly ever again. Keeping y in the cache is at least as good as keeping x, because y is needed sooner. Now consider A', who evicts x instead of y (but is otherwise the same as A), and thus A' will not have more misses than A. So A' agrees with OPTFF for one more step than A. Applying this inductively, if arbitrarily chosen A differs from OPTFF, we can always make this exchange and get an equally good algorithm that agrees with OPTFF longer. Thus OPTFF has no more misses than any other offline algorithm, and is optimal. 
 
 
